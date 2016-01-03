@@ -9,6 +9,8 @@ CONFIG  += qt
 QT      += gui
 QT      += network
 
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 LINK_LOCAL(library/sonarphony, sonarphony)
 
 HEADERS += about.H

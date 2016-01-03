@@ -1,0 +1,14 @@
+# Applications
+apps/sonarphony/sonarphony
+apps/sonarphonyd/sonarphonyd
+
+# Compiled output
+*.so
+*.a
+*.o
+
+# Qt Specific Stuff
+moc_*.cpp
+ui_*.h
+*.moc
+*.prf

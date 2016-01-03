@@ -15,13 +15,13 @@ QT      += network
 HEADERS += $${_HDIR}/logger.H
 HEADERS += $${_HDIR}/pingMsg.H
 HEADERS += $${_HDIR}/sonarConnection.H
-HEADERS += $${_HDIR}/sonarHandshakeMsg.H
 HEADERS += $${_HDIR}/sonarMsg.H
 
 # Private Headers
 HEADERS += masterCommand.H
 HEADERS += masterHandshake.H
 HEADERS += msgPrivate.H
+HEADERS += sonarHandshakeMsg.H
 
 # Sources
 SOURCES += logger.C
