@@ -18,6 +18,12 @@ device and the manufacturer's app. Hex dumps of the captured packets were
 compared against what the app displayed and was commanding to the device.
 Through some trial and error, a portion of the protocol was decoded.
 
+## Screenshots
+
+![Screenshot 0](/../screenshots/screenshots/screenshot-0.png?raw=true)
+![Screenshot 1](/../screenshots/screenshots/screenshot-1.png?raw=true)
+![Screenshot 2](/../screenshots/screenshots/screenshot-2.png?raw=true)
+
 ## Notes
 
 ### Device Testing Limitations
