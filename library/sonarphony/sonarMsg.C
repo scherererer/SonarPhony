@@ -112,7 +112,8 @@ sonarMsg_t::type_t sonarMsg_t::type () const
 	{
 	case 10:        return T_BUSY;
 	case 32:        return T_HANDSHAKE;
-	case 340:       return T_PING;
+	case 340:       return T_PING;  // T-POD
+	case 360:       return T_PING;  // SP200
 	default:        return T_UNKNOWN;
 	}
 }
