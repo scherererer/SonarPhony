@@ -8,7 +8,9 @@ apps/sonarphonyd/sonarphonyd
 *.o
 
 # Qt Specific Stuff
+moc_*.h
 moc_*.cpp
 ui_*.h
 *.moc
 *.prf
+.qmake.stash

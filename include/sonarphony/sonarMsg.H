@@ -36,6 +36,9 @@ public:
 	/// \param other_ Message to copy
 	sonarMsg_t (sonarMsg_t const &other_);
 
+	/// \brief Is this a valid message?
+	bool isValid () const;
+
 	/// \brief Status information
 	enum status_t
 	{
@@ -65,6 +68,9 @@ public:
 	/// \sa sonarMsg_t::type ()
 	unsigned reportedSize () const;
 
+	/// \brief Get the message's function code
+	char functionCode () const;
+
 	/// \brief Enumeration of all possible message types
 	enum type_t
 	{
@@ -73,15 +79,19 @@ public:
 		/// If you see one of these you should report it so we can
 		/// figure out what it means!
 		T_UNKNOWN       = 0,
+		/// \brief Cannot determine type because message is invalid
+		T_INVALID,
 		/// \brief Handshake message type
 		/// \sa sonarHandshakeMsg_t
-		T_HANDSHAKE     = 1,
+		T_HANDSHAKE,
 		/// \brief Ping message type
 		/// \sa pingMsg_t
-		T_PING          = 2,
+		T_PING,
 		/// \brief Busy message type
 		/// \sa sonarMsg_t
-		T_BUSY          = 3,
+		T_BUSY,
+		/// \brief "V" message type (unknown)
+		T_V,
 	};
 
 	/// \brief Get the message type

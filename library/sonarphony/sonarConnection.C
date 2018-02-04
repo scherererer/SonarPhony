@@ -170,10 +170,10 @@ void sonarConnection_t::handleDatagrams ()
 				emit ping (p);
 				break;
 			    }
-			case sonarMsg_t::T_BUSY:
-				break;
 			case sonarMsg_t::T_UNKNOWN:
-				// dump contents
+			case sonarMsg_t::T_INVALID:
+			case sonarMsg_t::T_BUSY:
+			case sonarMsg_t::T_V:
 				break;
 			}
 		}

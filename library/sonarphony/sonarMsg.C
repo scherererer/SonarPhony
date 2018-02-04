@@ -84,12 +84,29 @@ sonarMsg_t::sonarMsg_t (sonarMsg_t const &other_) :
 {
 }
 
+bool sonarMsg_t::isValid () const
+{
+	// Validate size
+	if (m_buffer.size () < O_TYPE)
+		return false;
+	if (reportedSize () != static_cast<unsigned> (m_buffer.size ()))
+		return false;
+	// Validate it has the sync bytes
+	if (static_cast<uint8_t> (m_buffer[0]) != 0xFFu ||
+	    static_cast<uint8_t> (m_buffer[1]) != 0x00u ||
+	    static_cast<uint8_t> (m_buffer[2]) != 0xFFu ||
+	    static_cast<uint8_t> (m_buffer[3]) != 0x00u)
+		return false;
+
+	return true;
+}
+
 sonarMsg_t::status_t sonarMsg_t::status () const
 {
 	Q_ASSERT (m_buffer.size () >= 10);
 
-	char status[] = { m_buffer[6], m_buffer[7],
-	                  m_buffer[8], m_buffer[9], 0 };
+	char status[] = { m_buffer[O_STATUS], m_buffer[O_STATUS + 1],
+	                  m_buffer[O_STATUS + 2], m_buffer[O_STATUS + 3], 0 };
 
 	if (strcmp (status, "REDY") == 0)
 		return S_READY;
@@ -106,15 +123,27 @@ unsigned sonarMsg_t::reportedSize () const
 			m_buffer.constData () + O_SIZE));
 }
 
+char sonarMsg_t::functionCode () const
+{
+	return m_buffer[O_TYPE + 1];
+}
+
 sonarMsg_t::type_t sonarMsg_t::type () const
 {
-	switch (reportedSize ())
+	if (! isValid ())
+		return T_INVALID;
+
+	if (status () == S_BUSY)
+		return T_BUSY;
+	if (status () == S_UNKNOWN)
+		return T_UNKNOWN;
+
+	switch (functionCode ())
 	{
-	case 10:        return T_BUSY;
-	case 32:        return T_HANDSHAKE;
-	case 340:       return T_PING;  // T-POD
-	case 360:       return T_PING;  // SP200
-	default:        return T_UNKNOWN;
+	case 'X': return T_HANDSHAKE;
+	case 'V': return T_V;
+	case 'C': return T_PING;
+	default: return T_UNKNOWN;
 	}
 }
 
@@ -148,13 +177,15 @@ string sonarphony::toString (sonarMsg_t::type_t type_)
 {
 	switch (type_)
 	{
-	case sonarMsg_t::T_BUSY:        return "Busy";
+	case sonarMsg_t::T_UNKNOWN:     return "Unknown";
+	case sonarMsg_t::T_INVALID:     return "Invalid";
 	case sonarMsg_t::T_HANDSHAKE:   return "Handshake";
 	case sonarMsg_t::T_PING:        return "Ping";
-	case sonarMsg_t::T_UNKNOWN:     return "Unknown";
+	case sonarMsg_t::T_BUSY:        return "Busy";
+	case sonarMsg_t::T_V:           return "V";
 	}
 
-	Q_ASSERT (false);
+	Q_UNREACHABLE ();
 	return "FATAL";
 }
 
