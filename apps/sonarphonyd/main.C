@@ -30,24 +30,17 @@ int main (int argc_, char **argv_)
 	app.setApplicationName (argv_[0]);
 	app.setApplicationVersion (SONARPHONY_VERSION);
 
-	string configFile;
 	bool usageError = false;
 	int opt = '?';
 
-	while ((opt = getopt (argc_, argv_, "c:?h")) != -1)
+	while ((opt = getopt (argc_, argv_, "?h")) != -1)
 		switch (opt)
 		{
-		case 'c':
-			configFile = optarg;
-			break;
 		case '?':
 		case 'h':
 			usageError = true;
 			break;
 		}
-
-	if (configFile.empty ())
-		usageError = true;
 
 	if (usageError)
 	{
@@ -63,8 +56,6 @@ int main (int argc_, char **argv_)
 		     << "\nUsage: " << argv_[0] << " -c [config file]\n"
 		     << "\n"
 		     << "Options:\n"
-		     << "-c [config file]\n"
-		     << "\tRun using the config file given\n"
 		     << "\n-?, -h\n"
 		     << "\tShow this information\n";
 		return 1;
