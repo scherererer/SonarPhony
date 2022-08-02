@@ -95,10 +95,21 @@ void mainWindow_t::handleData (QByteArray const &msg_)
 	case sonarMsg_t::T_UNKNOWN:
 	    {
 		QString const s =
-			QString ("%1:  UNKOWN MESSAGE, size: %2, status: %3\n")
+			QString ("%1:  Unknown message, size: %2, function: %3, status: %4\n")
 			.arg (QTime::currentTime ().toString ("HH:mm:ss.zzz"))
 			.arg (msg.size ())
+			.arg (msg.functionCode ())
 			.arg (msg.status ());
+
+		m_ui.output->appendPlainText (s);
+		break;
+	    }
+	case sonarMsg_t::T_INVALID:
+	    {
+		QString const s =
+			QString ("%1:  Invalid message, size %2\n")
+			.arg (QTime::currentTime ().toString ("HH:mm:ss.zzz"))
+			.arg (msg.size ());
 
 		m_ui.output->appendPlainText (s);
 		break;
@@ -107,8 +118,8 @@ void mainWindow_t::handleData (QByteArray const &msg_)
 		m_ui.output->appendPlainText ("Handshake");
 		break;
 	case sonarMsg_t::T_PING:
-		break;
 	case sonarMsg_t::T_BUSY:
+	case sonarMsg_t::T_V:
 		break;
 	}
 }
