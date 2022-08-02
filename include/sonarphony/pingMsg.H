@@ -41,6 +41,7 @@ public:
 	/// \brief Copy constructor
 	/// \param msg_ Message to be copied
 	pingMsg_t (pingMsg_t const &msg_);
+	pingMsg_t& operator= (const pingMsg_t&) = default;
 
 	/// \brief Get the minimum range (upper limit) in feet
 	unsigned minRange () const;

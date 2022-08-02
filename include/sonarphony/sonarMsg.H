@@ -35,6 +35,7 @@ public:
 	/// \brief Copy constructor
 	/// \param other_ Message to copy
 	sonarMsg_t (sonarMsg_t const &other_);
+	sonarMsg_t& operator= (const sonarMsg_t&) = default;
 
 	/// \brief Is this a valid message?
 	bool isValid () const;

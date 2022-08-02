@@ -35,6 +35,7 @@ public:
 	/// \brief Copy constructor
 	/// \param msg_ Message to copy
 	sonarHandshakeMsg_t (sonarMsg_t const &msg_);
+	sonarHandshakeMsg_t& operator= (const sonarHandshakeMsg_t&) = default;
 
 	/// \brief Get the serial number of the device
 	std::string serialNumber () const;

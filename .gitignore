@@ -3,9 +3,10 @@ apps/sonarphony/sonarphony
 apps/sonarphonyd/sonarphonyd
 
 # Compiled output
-*.so
+*.so*
 *.a
 *.o
+Makefile
 
 # Qt Specific Stuff
 moc_*.h
