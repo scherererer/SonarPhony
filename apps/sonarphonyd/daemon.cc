@@ -45,16 +45,22 @@ daemon_t::~daemon_t ()
 {
 }
 
-daemon_t::daemon_t () :
-	m_connection (this)
+daemon_t::daemon_t ()
+	: m_connection(this)
+	, m_udpPort(0)
+	, m_socket(this)
 {
 	connect (&m_connection, SIGNAL (ping (sonarphony::pingMsg_t const &)),
 	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
 }
 
-void daemon_t::initialize ()
+void daemon_t::initialize (int const udpPort_)
 {
 	m_connection.start ();
+	m_udpPort = udpPort_;
+
+	if (udpPort_ == 0)
+		return;
 }
 
 void daemon_t::handlePing (pingMsg_t const &ping_)
@@ -63,7 +69,7 @@ void daemon_t::handlePing (pingMsg_t const &ping_)
 	// http://www.nmea.de/nmea0183datensaetze.html
 	// https://en.wikipedia.org/wiki/NMEA_0183
 
-	static char buffer[128];
+	static char buffer[1024];
 
 	int chars = snprintf (buffer, sizeof (buffer),
 	                      "$SDDPT,%.1f,0.0*", ping_.depth ());
@@ -74,10 +80,8 @@ void daemon_t::handlePing (pingMsg_t const &ping_)
 	chars = snprintf (buffer + chars, sizeof (buffer),
 	                  "%02X\r\n", nmea0183checksum (buffer));
 
-	if (chars <= 0)
-		return;
-
-	cout << buffer;
+	if (chars > 0)
+		send(QByteArray::fromRawData(buffer, chars));
 
 	// MTW - Water Temperature
 	//
@@ -98,8 +102,17 @@ void daemon_t::handlePing (pingMsg_t const &ping_)
 	chars = snprintf (buffer + chars, sizeof (buffer),
 	                  "%02X\r\n", nmea0183checksum (buffer));
 
-	if (chars <= 0)
-		return;
+	if (chars > 0)
+		send(QByteArray::fromRawData(buffer, chars));
+}
 
-	cout << buffer;
+void daemon_t::send(QByteArray const &buffer_)
+{
+	if (m_udpPort == 0)
+	{
+		cout << buffer_.constData();
+		return;
+	}
+
+	m_socket.writeDatagram(buffer_, QHostAddress::Broadcast, m_udpPort);
 }

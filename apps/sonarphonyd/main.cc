@@ -15,6 +15,8 @@
 
 #include "daemon.hh"
 
+#include <QCommandLineOption>
+#include <QCommandLineParser>
 #include <QCoreApplication>
 
 #include <unistd.h>
@@ -25,46 +27,51 @@ using namespace std;
 
 int main (int argc_, char **argv_)
 {
-	QCoreApplication app (argc_, argv_);
+	QCoreApplication app(argc_, argv_);
 
-	app.setApplicationName (argv_[0]);
-	app.setApplicationVersion (SONARPHONY_VERSION);
+	app.setApplicationName(argv_[0]);
+	app.setApplicationVersion(SONARPHONY_VERSION);
 
-	bool usageError = false;
-	int opt = '?';
+	QCommandLineParser parser;
+	parser.setApplicationDescription("SonarPhony Daemon");
+	QCommandLineOption const helpOption = parser.addHelpOption();
+	QCommandLineOption const versOption = parser.addVersionOption();
 
-	while ((opt = getopt (argc_, argv_, "?h")) != -1)
-		switch (opt)
-		{
-		case '?':
-		case 'h':
-			usageError = true;
-			break;
-		}
+	QCommandLineOption udpPortOption(QStringList() << "u" << "udp-port",
+		QString("Configure to broadcast UDP to <port>"),
+		QString("port"), QString("0"));
+	parser.addOption(udpPortOption);
 
-	if (usageError)
+	if (!parser.parse(QCoreApplication::arguments()))
 	{
-		cerr << "SonarPhony Daemon v. " << SONARPHONY_VERSION
-		     << "  Copyright (C) " << SONARPHONY_COPYRIGHT_YEARS
-		     << " " << SONARPHONY_AUTHOR << "\n"
-		     << "This program comes with ABSOLUTELY NO WARRANTY.\n"
-		     << "This is free software, and you are welcome to "
-		        "redistribute it\n"
-		     << "under the terms of the GPL v3.0. If a copy wasn't "
-		     << "provided to you \n"
-		     << "then please see <http://www.gnu.org/licenses/>\n"
-		     << "\nUsage: " << argv_[0] << " -c [config file]\n"
-		     << "\n"
-		     << "Options:\n"
-		     << "\n-?, -h\n"
-		     << "\tShow this information\n";
+		cerr << parser.errorText().toStdString();
 		return 1;
+	}
+
+	int const udpPort = stoi(parser.value(udpPortOption).toStdString());
+
+	if (parser.isSet(helpOption))
+	{
+		parser.showHelp();
+		//     << "This program comes with ABSOLUTELY NO WARRANTY.\n"
+		//     << "This is free software, and you are welcome to "
+		//        "redistribute it\n"
+		//     << "under the terms of the GPL v3.0. If a copy wasn't "
+		//     << "provided to you \n"
+		//     << "then please see <http://www.gnu.org/licenses/>\n"
+		return 0;
+	}
+
+	if(parser.isSet(versOption))
+	{
+		parser.showVersion();
+		return 0;
 	}
 
 	daemon_t daemon;
 
-	daemon.initialize ();
+	daemon.initialize(udpPort);
 
-	return app.exec ();
+	return app.exec();
 }
 
