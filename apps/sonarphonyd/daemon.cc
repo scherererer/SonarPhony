@@ -78,4 +78,28 @@ void daemon_t::handlePing (pingMsg_t const &ping_)
 		return;
 
 	cout << buffer;
+
+	// MTW - Water Temperature
+	//
+	//	1   2 3
+	//	|   | |
+	// $--MTW,x.x,C*hh<CR><LF>
+	//
+	// Field Number:
+	//  1) Degrees
+	//  2) Unit of Measurement, Celcius
+	//  3) Checksum
+	chars = snprintf (buffer, sizeof (buffer),
+	                  "$SDMTW,%.1f,C*", ping_.temperature ());
+
+	if (chars <= 0)
+		return;
+
+	chars = snprintf (buffer + chars, sizeof (buffer),
+	                  "%02X\r\n", nmea0183checksum (buffer));
+
+	if (chars <= 0)
+		return;
+
+	cout << buffer;
 }
