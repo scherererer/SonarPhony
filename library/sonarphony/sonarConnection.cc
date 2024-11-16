@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SonarPhony.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "sonarphony/sonarConnection.H"
-#include "masterCommand.H"
-#include "masterHandshake.H"
-#include "sonarHandshakeMsg.H"
-#include "sonarphony/pingMsg.H"
-#include "sonarphony/sonarMsg.H"
+#include "sonarphony/sonarConnection.hh"
+#include "masterCommand.hh"
+#include "masterHandshake.hh"
+#include "sonarHandshakeMsg.hh"
+#include "sonarphony/pingMsg.hh"
+#include "sonarphony/sonarMsg.hh"
 using namespace sonarphony;
 
 #include <QByteArray>

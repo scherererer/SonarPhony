@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "sonarphony/pingMsg.H"
+#include "sonarphony/pingMsg.hh"
 
 #include <QLabel>
 #include <QPixmap>

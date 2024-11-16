@@ -13,18 +13,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 LINK_LOCAL(library/sonarphony, sonarphony)
 
-HEADERS += about.H
-HEADERS += columnPulser.H
-HEADERS += mainWindow.H
-HEADERS += palette.H
-HEADERS += waterfall.H
+HEADERS += about.hh
+HEADERS += columnPulser.hh
+HEADERS += mainWindow.hh
+HEADERS += palette.hh
+HEADERS += waterfall.hh
 
-SOURCES += about.C
-SOURCES += columnPulser.C
-SOURCES += main.C
-SOURCES += mainWindow.C
-SOURCES += palette.C
-SOURCES += waterfall.C
+SOURCES += about.cc
+SOURCES += columnPulser.cc
+SOURCES += main.cc
+SOURCES += mainWindow.cc
+SOURCES += palette.cc
+SOURCES += waterfall.cc
 
 FORMS   += about.ui
 FORMS   += mainWindow.ui

@@ -15,10 +15,10 @@
 
 #pragma once
 
-#include "about.H"
+#include "about.hh"
 
-#include "sonarphony/sonarConnection.H"
-#include "sonarphony/logger.H"
+#include "sonarphony/sonarConnection.hh"
+#include "sonarphony/logger.hh"
 
 #include "ui_mainWindow.h"
 #include "ui_preferences.h"

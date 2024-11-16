@@ -12,24 +12,24 @@ QT      -= gui
 QT      += network
 
 # Exposed headers
-HEADERS += $${_HDIR}/logger.H
-HEADERS += $${_HDIR}/pingMsg.H
-HEADERS += $${_HDIR}/sonarConnection.H
-HEADERS += $${_HDIR}/sonarMsg.H
+HEADERS += $${_HDIR}/logger.hh
+HEADERS += $${_HDIR}/pingMsg.hh
+HEADERS += $${_HDIR}/sonarConnection.hh
+HEADERS += $${_HDIR}/sonarMsg.hh
 
 # Private Headers
-HEADERS += masterCommand.H
-HEADERS += masterHandshake.H
-HEADERS += msgPrivate.H
-HEADERS += sonarHandshakeMsg.H
+HEADERS += masterCommand.hh
+HEADERS += masterHandshake.hh
+HEADERS += msgPrivate.hh
+HEADERS += sonarHandshakeMsg.hh
 
 # Sources
-SOURCES += logger.C
-SOURCES += masterCommand.C
-SOURCES += masterHandshake.C
-SOURCES += pingMsg.C
-SOURCES += sonarConnection.C
-SOURCES += sonarHandshakeMsg.C
-SOURCES += sonarMsg.C
+SOURCES += logger.cc
+SOURCES += masterCommand.cc
+SOURCES += masterHandshake.cc
+SOURCES += pingMsg.cc
+SOURCES += sonarConnection.cc
+SOURCES += sonarHandshakeMsg.cc
+SOURCES += sonarMsg.cc
 
 #INSTALLS += $${TARGET}

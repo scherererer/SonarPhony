@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "sonarphony/sonarMsg.H"
+#include "sonarphony/sonarMsg.hh"
 
 #include <QByteArray>
 

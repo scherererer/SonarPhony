@@ -11,7 +11,7 @@ QT      += network
 
 LINK_LOCAL(library/sonarphony, sonarphony)
 
-HEADERS += daemon.H
+HEADERS += daemon.hh
 
-SOURCES += daemon.C
-SOURCES += main.C
+SOURCES += daemon.cc
+SOURCES += main.cc

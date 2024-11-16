@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "sonarphony/sonarConnection.H"
+#include "sonarphony/sonarConnection.hh"
 
 #include <QObject>
 

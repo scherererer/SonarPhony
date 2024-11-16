@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SonarPhony.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "sonarphony/logger.H"
-#include "sonarphony/pingMsg.H"
-#include "sonarphony/sonarConnection.H"
+#include "sonarphony/logger.hh"
+#include "sonarphony/pingMsg.hh"
+#include "sonarphony/sonarConnection.hh"
 using namespace sonarphony;
 
 #include <QDir>

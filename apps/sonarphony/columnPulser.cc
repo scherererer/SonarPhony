@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SonarPhony.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "columnPulser.H"
-#include "palette.H"
+#include "columnPulser.hh"
+#include "palette.hh"
 
 using namespace sonarphony;
 

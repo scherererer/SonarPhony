@@ -407,12 +407,12 @@
   <customwidget>
    <class>waterfall_t</class>
    <extends>QLabel</extends>
-   <header>waterfall.H</header>
+   <header>waterfall.hh</header>
   </customwidget>
   <customwidget>
    <class>columnPulser_t</class>
    <extends>QLabel</extends>
-   <header>columnPulser.H</header>
+   <header>columnPulser.hh</header>
   </customwidget>
  </customwidgets>
  <resources/>
