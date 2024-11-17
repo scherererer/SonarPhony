@@ -73,15 +73,17 @@ void daemon_t::handlePing (pingMsg_t const &ping_)
 
 	int chars = snprintf (buffer, sizeof (buffer),
 	                      "$SDDPT,%.1f,0.0*", ping_.depth ());
+	int len = chars;
 
 	if (chars <= 0)
 		return;
 
 	chars = snprintf (buffer + chars, sizeof (buffer),
 	                  "%02X\r\n", nmea0183checksum (buffer));
+	len += chars;
 
 	if (chars > 0)
-		send(QByteArray::fromRawData(buffer, chars));
+		send(QByteArray::fromRawData(buffer, len));
 
 	// MTW - Water Temperature
 	//
@@ -95,15 +97,17 @@ void daemon_t::handlePing (pingMsg_t const &ping_)
 	//  3) Checksum
 	chars = snprintf (buffer, sizeof (buffer),
 	                  "$SDMTW,%.1f,C*", ping_.temperature ());
+	len = chars;
 
 	if (chars <= 0)
 		return;
 
 	chars = snprintf (buffer + chars, sizeof (buffer),
 	                  "%02X\r\n", nmea0183checksum (buffer));
+	len += chars;
 
 	if (chars > 0)
-		send(QByteArray::fromRawData(buffer, chars));
+		send(QByteArray::fromRawData(buffer, len));
 }
 
 void daemon_t::send(QByteArray const &buffer_)
