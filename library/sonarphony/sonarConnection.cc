@@ -94,7 +94,7 @@ sonarConnection_t::sonarConnection_t (QObject *parent_) :
 	connect (&m_d->socket, SIGNAL (readyRead ()),
 	         SLOT (handleDatagrams ()));
 
-	m_d->socket.connectToHost (QHostAddress (HOST), PORT);
+	m_d->socket.bind();
 }
 
 void sonarConnection_t::setRange (double min_, double max_)
@@ -128,9 +128,9 @@ void sonarConnection_t::query ()
 	if (m_d->handshakeFinished)
 		cmd = m_d->masterCommand;
 	else
-		cmd = masterHandshakeBuilder_t ().build ();
+		cmd = masterHandshakeBuilder_t().build();
 
-	m_d->socket.write (cmd);
+	m_d->socket.writeDatagram(cmd, QHostAddress(HOST), PORT);
 }
 
 void sonarConnection_t::handleDatagrams ()
