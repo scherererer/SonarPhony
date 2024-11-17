@@ -63,6 +63,13 @@ void daemon_t::initialize (int const udpPort_)
 		return;
 }
 
+void daemon_t::rawLog(std::string directory_)
+{
+	m_rawLogger.setDirectory(directory_);
+	m_rawLogger.setConnection(m_connection);
+	m_rawLogger.setEnabled(true);
+}
+
 void daemon_t::handlePing (pingMsg_t const &ping_)
 {
 	// NMEA0183 'specification' taken from:

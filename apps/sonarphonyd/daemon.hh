@@ -16,6 +16,7 @@
 #pragma once
 
 #include "sonarphony/sonarConnection.hh"
+#include "sonarphony/logger.hh"
 
 #include <QByteArray>
 #include <QObject>
@@ -32,6 +33,8 @@ public:
 	/// \brief Initialize the daemon
 	void initialize(int udpPort_);
 
+	void rawLog(std::string directory_);
+
 private slots:
 	/// \brief Handle a ping message
 	/// \param ping_ Ping message to handle
@@ -46,4 +49,6 @@ private:
 	int m_udpPort;
 	/// \brief Socket for UDP messages
 	QUdpSocket m_socket;
+
+	sonarphony::rawLogger_t m_rawLogger;
 };

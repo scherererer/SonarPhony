@@ -42,6 +42,11 @@ int main (int argc_, char **argv_)
 		QString("port"), QString("0"));
 	parser.addOption(udpPortOption);
 
+	QCommandLineOption rawLogOption(QStringList() << "r" << "raw-log",
+		QString("Log raw data to <directory>"),
+		QString("directory"));
+	parser.addOption(rawLogOption);
+
 	if (!parser.parse(QCoreApplication::arguments()))
 	{
 		cerr << parser.errorText().toStdString();
@@ -71,6 +76,9 @@ int main (int argc_, char **argv_)
 	daemon_t daemon;
 
 	daemon.initialize(udpPort);
+
+	if (parser.isSet(rawLogOption))
+		daemon.rawLog(parser.value(rawLogOption).toStdString());
 
 	return app.exec();
 }
