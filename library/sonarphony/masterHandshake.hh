@@ -31,6 +31,12 @@ public:
 	/// \brief Build the message
 	QByteArray const &build ();
 
+	/// \brief Build the pause message
+	QByteArray const &buildPause ();
+
+	/// \brief Build the master message
+	QByteArray const &buildMaster ();
+
 private:
 	QByteArray m_buffer;    ///< Message buffer
 };

@@ -121,6 +121,9 @@ void mainWindow_t::handleData (QByteArray const &msg_)
 	case sonarMsg_t::T_BUSY:
 	case sonarMsg_t::T_V:
 		break;
+	case sonarMsg_t::T_MASTER:
+		m_ui.output->appendPlainText ("Master");
+		break;
 	}
 }
 

@@ -143,6 +143,7 @@ sonarMsg_t::type_t sonarMsg_t::type () const
 	case 'X': return T_HANDSHAKE;
 	case 'V': return T_V;
 	case 'C': return T_PING;
+	case 'M': return T_MASTER;
 	default: return T_UNKNOWN;
 	}
 }
@@ -183,6 +184,7 @@ string sonarphony::toString (sonarMsg_t::type_t type_)
 	case sonarMsg_t::T_PING:        return "Ping";
 	case sonarMsg_t::T_BUSY:        return "Busy";
 	case sonarMsg_t::T_V:           return "V";
+	case sonarMsg_t::T_MASTER:      return "Master";
 	}
 
 	Q_UNREACHABLE ();

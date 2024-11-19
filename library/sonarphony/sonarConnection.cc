@@ -54,18 +54,23 @@ public:
 		requestTimer (parent_),
 		socket (parent_),
 		handshakeFinished (false),
+		masterFinished (false),
 		serialNumber (),
-		masterCommand ()
+		masterCommand (),
+		pause(false)
 	{}
 
 	QTimer requestTimer;            ///< Timer to poll the device
 	QUdpSocket socket;              ///< Socket to send/receive data on
 
 	bool handshakeFinished;         ///< Has the handshake finished?
+	bool masterFinished;            ///< Have we declared ourselves master?
 
 	std::string serialNumber;       ///< Serial number of device
 
 	QByteArray masterCommand;       ///< Cached command to send to device
+
+	bool pause;
 };
 
 
@@ -114,21 +119,28 @@ string sonarConnection_t::serialNumber () const
 void sonarConnection_t::start ()
 {
 	m_d->requestTimer.start ();
+	m_d->pause = false;
 }
 
 void sonarConnection_t::stop ()
 {
-	m_d->requestTimer.stop ();
+	m_d->pause = true;
+	m_d->handshakeFinished = false;
+	m_d->masterFinished = false;
 }
 
 void sonarConnection_t::query ()
 {
 	QByteArray cmd;
 
-	if (m_d->handshakeFinished)
-		cmd = m_d->masterCommand;
-	else
+	if (m_d->pause)
+		cmd = masterHandshakeBuilder_t().buildPause();
+	else if (! m_d->handshakeFinished)
 		cmd = masterHandshakeBuilder_t().build();
+	else if (! m_d->masterFinished)
+		cmd = masterHandshakeBuilder_t().buildMaster();
+	else
+		cmd = m_d->masterCommand;
 
 	m_d->socket.writeDatagram(cmd, QHostAddress(HOST), PORT);
 }
@@ -163,6 +175,9 @@ void sonarConnection_t::handleDatagrams ()
 				emit serialNumberChanged ();
 				break;
 			    }
+			case sonarMsg_t::T_MASTER:
+			    m_d->masterFinished = true;
+			    break;
 			case sonarMsg_t::T_PING:
 			    {
 				pingMsg_t p (*m);

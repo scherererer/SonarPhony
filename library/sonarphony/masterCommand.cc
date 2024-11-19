@@ -35,9 +35,14 @@ unsigned char const MAGIC_MIDDLE[] = {
 	0x00, 0x00, 0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+/// \brief Session Code
+unsigned char const SESSION[] = {
+	0x00, 0x17, 0x31, 0x98, 0x71, 0x81, 0x48
+};
+
 /// \brief Magical footer
 unsigned char const FOOTER[] = {
-	0x00, 0x58, 0xa2, 0xb5, 0x78, 0xef, 0xf5, 0x00, 0x00
+	0x00, 0x00
 };
 
 }
@@ -88,7 +93,9 @@ QByteArray const &masterCommandBuilder_t::build ()
 	// Checksum. Why that's needed inside of a UDP packet I'll never know
 	m_buffer.append (calculateChecksum (m_buffer));
 
-	// Magical message footer
+	// Session
+	m_buffer.append (_U2S (SESSION), sizeof (SESSION));
+	// Stop bytes
 	m_buffer.append (_U2S (FOOTER), sizeof (FOOTER));
 
 	return m_buffer;
