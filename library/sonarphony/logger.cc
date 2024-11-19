@@ -132,11 +132,15 @@ void rawLogger_t::setConnection (sonarConnection_t &connection_)
 
 void rawLogger_t::handleData (QByteArray const &data_)
 {
-	m_buffer.resize (4);
+	m_buffer.resize (12);
 
 	qToLittleEndian<quint32> (
-		data_.size (),
-		reinterpret_cast<uchar *> (m_buffer.data ()));
+		(data_.size()+8),
+		reinterpret_cast<uchar *> (m_buffer.data()));
+
+	qToLittleEndian<quint64> (
+		QDateTime::currentMSecsSinceEpoch(),
+		reinterpret_cast<uchar *> (m_buffer.data()+4));
 
 	m_buffer.append (data_);
 
