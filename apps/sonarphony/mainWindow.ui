@@ -152,7 +152,7 @@
         <string> ft</string>
        </property>
        <property name="minimum">
-        <number>9</number>
+        <number>0</number>
        </property>
        <property name="maximum">
         <number>270</number>
