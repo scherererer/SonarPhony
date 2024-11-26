@@ -28,14 +28,15 @@ using namespace sonarphony;
 using namespace std;
 
 
-mainWindow_t::mainWindow_t () :
-	QMainWindow (),
-	m_ui (),
-	m_preferences (),
-	m_aboutDialog (this),
-	m_connection (),
-	m_rawLogger (),
-	m_nmeaLogger ()
+mainWindow_t::mainWindow_t ()
+	: QMainWindow()
+	, m_ui()
+	, m_preferences()
+	, m_aboutDialog(this)
+	, m_connection()
+	, m_rawLogger()
+	, m_nmeaLogger()
+    , m_playback()
 {
 	m_ui.setupUi (this);
 
@@ -84,6 +85,19 @@ mainWindow_t::mainWindow_t () :
 
 	m_rawLogger.setConnection (m_connection);
 	m_nmeaLogger.setConnection (m_connection);
+
+
+	connect (&m_playback,
+	         SIGNAL (ping (sonarphony::pingMsg_t const &)),
+	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
+	connect (&m_playback,
+	         SIGNAL (ping (sonarphony::pingMsg_t const &)),
+	         m_ui.columnPulser,
+	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
+	connect (&m_playback,
+	         SIGNAL (ping (sonarphony::pingMsg_t const &)),
+	         m_ui.waterfall,
+	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
 }
 
 void mainWindow_t::handleData (QByteArray const &msg_)
@@ -187,5 +201,8 @@ void mainWindow_t::on_actionPreferences_triggered (bool checked_)
 
 	m_rawLogger.setEnabled (m_preferences.ui.enableRawLogs->isChecked ());
 	m_nmeaLogger.setEnabled (m_preferences.ui.enableNmeaLogs->isChecked ());
+
+    if (m_preferences.ui.enablePlayback->isChecked())
+        m_playback.setFile(m_preferences.ui.playbackFile->text());
 }
 

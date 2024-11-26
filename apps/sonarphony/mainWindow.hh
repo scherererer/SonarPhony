@@ -16,6 +16,7 @@
 #pragma once
 
 #include "about.hh"
+#include "playback.hh"
 
 #include "sonarphony/sonarConnection.hh"
 #include "sonarphony/logger.hh"
@@ -73,5 +74,7 @@ private:
 	sonarphony::rawLogger_t m_rawLogger;
 	/// \brief NMEA0183 data logger
 	sonarphony::nmeaLogger_t m_nmeaLogger;
+
+    playback_t m_playback;
 };
 
