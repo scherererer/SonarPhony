@@ -31,9 +31,9 @@ namespace
 {
 
 /// \brief Number of pings to display in the waterfall
-unsigned const NUM_PINGS                = 256;
+unsigned const NUM_PINGS                = 512;
 /// \brief Resolution of watercolumn to display
-unsigned const VERTICAL_RESOLUTION      = 500;
+unsigned const VERTICAL_RESOLUTION      = 800;
 
 /// \brief Interpolate a ping intensity at the given depth
 /// \param msg_ Ping message to get column from
@@ -61,7 +61,7 @@ unsigned interp (pingMsg_t const &msg_, double const depth_)
 	Q_ASSERT (a <= b);
 	Q_ASSERT (a < size);
 
-	char const * const data = msg_.pingData ();
+	unsigned char const * const data = reinterpret_cast<unsigned char const *>(msg_.pingData ());
 
 	if (b >= size)
 		return data[a];

@@ -61,7 +61,7 @@ unsigned interp (pingMsg_t const &msg_, double const depth_)
 	Q_ASSERT (a <= b);
 	Q_ASSERT (a < size);
 
-	char const * const data = msg_.pingData ();
+	unsigned char const * const data = reinterpret_cast<unsigned char const *>(msg_.pingData ());
 
 	if (b >= size)
 		return data[a];
