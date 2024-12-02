@@ -38,12 +38,13 @@ namespace backgrounds
 
 struct background_t
 {
-	background_t (QString name_, QColor color_) :
-		name (name_), color (color_)
+	background_t (QString name_, QColor color_, QColor foreground_) :
+		name (name_), color (color_), foreground(foreground_)
 	{}
 
 	QString name;
 	QColor color;
+	QColor foreground;
 };
 
 extern std::vector<background_t> list;

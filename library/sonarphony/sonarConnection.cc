@@ -22,6 +22,7 @@
 using namespace sonarphony;
 
 #include <QByteArray>
+#include <QDateTime>
 #include <QDebug>
 
 #include <vector>
@@ -182,7 +183,7 @@ void sonarConnection_t::handleDatagrams ()
 			    {
 				pingMsg_t p (*m);
 
-				emit ping (p);
+				emit ping (QDateTime::currentMSecsSinceEpoch(), p);
 				break;
 			    }
 			case sonarMsg_t::T_UNKNOWN:

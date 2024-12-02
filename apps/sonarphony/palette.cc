@@ -73,8 +73,10 @@ vector<background_t> createBackgroundList ()
 {
 	vector<background_t> list;
 
-	list.push_back (background_t ("Black", QColor (0, 0, 0)));
-	list.push_back (background_t ("White", QColor (255, 255, 255)));
+	list.push_back (background_t ("Black", QColor (0, 0, 0),
+	                              QColor (255, 255, 255)));
+	list.push_back (background_t ("White", QColor (255, 255, 255),
+	                              QColor (0, 0, 0)));
 
 	return list;
 }

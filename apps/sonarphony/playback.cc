@@ -36,7 +36,8 @@ void playback_t::setFile(QString const &file_)
     m_file.open(QIODeviceBase::ReadOnly);
 
     m_timer.setSingleShot(false);
-    m_timer.setInterval(10); // TODO
+    m_timer.setInterval(5); // TODO
+    m_timer.setTimerType(Qt::PreciseTimer);
 	connect (&m_timer, SIGNAL (timeout ()),
 	         SLOT (readMore ()));
 
@@ -56,13 +57,13 @@ void playback_t::readMore()
 	unsigned const size = qFromLittleEndian<quint32>(sizeBuffer.constData()) - 8;
 
     QByteArray const timeBuffer = m_file.read(8);
-    (void) timeBuffer; // TODO
+    quint64 const time = qFromLittleEndian<quint64>(timeBuffer); // TODO
 
     QByteArray const dataBuffer = m_file.read(size);
 
     if (size<200)
         return;
 
-    emit ping(pingMsg_t(dataBuffer));
+    emit ping(time, pingMsg_t(dataBuffer));
 }
 

@@ -42,7 +42,7 @@ private slots:
 	void handleData (QByteArray const &msg_);
 	/// \brief Handle a ping message
 	/// \param ping_ Ping message
-	void handlePing (sonarphony::pingMsg_t const &ping_);
+	void handlePing (quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
 
 	/// \brief Handle a change in serial number
 	void serialNumberChanged ();

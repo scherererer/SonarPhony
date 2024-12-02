@@ -31,7 +31,10 @@ public:
     void setFile(QString const &file_);
 
 signals:
-	void ping(sonarphony::pingMsg_t const &ping_);
+	/// \brief A new ping message has been returned
+	/// \param tstamp_ Time in seconds since the epoch
+	/// \param ping_ The ping message
+	void ping(quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
 
 private slots:
     void readMore();

@@ -93,11 +93,13 @@ waterfall_t::waterfall_t (QWidget *parent_) :
 	         SLOT (redraw ()));
 
 	m_timer.setSingleShot (true);
-	m_timer.setInterval (100);
+	m_timer.setInterval (10);
 }
 
-void waterfall_t::handlePing (sonarphony::pingMsg_t const &ping_)
+void waterfall_t::handlePing (quint64 tstamp_, sonarphony::pingMsg_t const &ping_)
 {
+    (void) tstamp_;
+
 	if (m_msgBuffer.size () + 1 > NUM_PINGS)
 	{
 		pingMsg_t const &remove = m_msgBuffer.front ();
@@ -163,7 +165,11 @@ void waterfall_t::redraw ()
 
 			unsigned const value = interp (m_msgBuffer[c], depth);
 
-			if (value > 255)
+			if (floor(depth * 10) == floor(m_msgBuffer[c].depth()*10))
+				painter.setPen (
+					backgrounds::list[m_backgroundIndex]
+					.foreground);
+			else if (value > 255)
 				painter.setPen (
 					backgrounds::list[m_backgroundIndex]
 					.color);

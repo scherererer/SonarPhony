@@ -94,8 +94,11 @@ columnPulser_t::columnPulser_t (QWidget *parent_) :
 	m_timer.setInterval (100);
 }
 
-void columnPulser_t::handlePing (sonarphony::pingMsg_t const &ping_)
+void columnPulser_t::handlePing (quint64 tstamp_,
+                                 sonarphony::pingMsg_t const &ping_)
 {
+    (void) tstamp_;
+
 	m_lastMsg = ping_;
 
 	if (! m_timer.isActive ())

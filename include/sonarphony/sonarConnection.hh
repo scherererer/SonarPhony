@@ -51,8 +51,9 @@ signals:
 	void newData (QByteArray const &data_);
 
 	/// \brief A new ping message has been returned
+	/// \param tstamp_ Time in seconds since the epoch
 	/// \param ping_ The ping message
-	void ping (sonarphony::pingMsg_t const &ping_);
+	void ping (quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
 
 	/// \brief Signaled when the serial number on the device changes or is
 	/// received for the first time
