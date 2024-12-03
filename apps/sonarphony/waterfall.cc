@@ -93,7 +93,7 @@ waterfall_t::waterfall_t (QWidget *parent_) :
 	         SLOT (redraw ()));
 
 	m_timer.setSingleShot (true);
-	m_timer.setInterval (10);
+	m_timer.setInterval (100);
 }
 
 void waterfall_t::handlePing (quint64 tstamp_, sonarphony::pingMsg_t const &ping_)

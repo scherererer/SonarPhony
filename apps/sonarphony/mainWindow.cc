@@ -195,5 +195,13 @@ void mainWindow_t::on_actionPreferences_triggered (bool checked_)
 
     if (m_preferences.ui.enablePlayback->isChecked())
         m_playback.setFile(m_preferences.ui.playbackFile->text());
+
+    m_ui.timelineDockWidget->setEnabled(m_preferences.ui.enablePlayback->isChecked());
+    m_ui.controlsDockWidget->setEnabled(! m_preferences.ui.enablePlayback->isChecked());
+}
+
+void mainWindow_t::on_timeFastButton_clicked()
+{
+    m_playback.skip(1000);
 }
 

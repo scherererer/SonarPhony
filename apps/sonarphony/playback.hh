@@ -30,6 +30,9 @@ public:
 
     void setFile(QString const &file_);
 
+    /// \brief Skip forward
+    void skip(unsigned amount_ = 100);
+
 signals:
 	/// \brief A new ping message has been returned
 	/// \param tstamp_ Time in seconds since the epoch

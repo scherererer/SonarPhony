@@ -37,11 +37,28 @@ void playback_t::setFile(QString const &file_)
 
     m_timer.setSingleShot(false);
     m_timer.setInterval(5); // TODO
-    m_timer.setTimerType(Qt::PreciseTimer);
 	connect (&m_timer, SIGNAL (timeout ()),
 	         SLOT (readMore ()));
 
     m_timer.start();
+}
+
+void playback_t::skip(unsigned amount_)
+{
+    for(unsigned i = 0; i < amount_; ++i)
+    {
+        if (! m_file.isOpen() || m_file.atEnd())
+        {
+            m_file.close();
+            m_file.open(QIODeviceBase::ReadOnly);
+            return;
+        }
+
+        QByteArray const sizeBuffer = m_file.read(4);
+        unsigned const size = qFromLittleEndian<quint32>(sizeBuffer.constData());
+
+        (void) m_file.skip(size);
+    }
 }
 
 void playback_t::readMore()

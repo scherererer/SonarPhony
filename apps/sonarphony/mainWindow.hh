@@ -56,6 +56,8 @@ private slots:
 	/// \param checked_ Is it checked?
 	void on_actionPreferences_triggered (bool checked_);
 
+    void on_timeFastButton_clicked();
+
 private:
 	Ui::mainWindow m_ui;            ///< Primary form
 
