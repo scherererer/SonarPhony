@@ -156,12 +156,14 @@ nmeaLogger_t::nmeaLogger_t () :
 
 void nmeaLogger_t::setConnection (sonarConnection_t &connection_)
 {
-	connect (&connection_, SIGNAL (ping (sonarphony::pingMsg_t const &)),
-	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
+	connect (&connection_, &sonarConnection_t::ping,
+	         this, &nmeaLogger_t::handlePing);
 }
 
-void nmeaLogger_t::handlePing (pingMsg_t const &ping_)
+void nmeaLogger_t::handlePing (quint64 tstamp_, pingMsg_t const &ping_)
 {
+    (void) tstamp_;
+
 	// NMEA0183 'specification' taken from:
 	// http://www.nmea.de/nmea0183datensaetze.html
 	// https://en.wikipedia.org/wiki/NMEA_0183

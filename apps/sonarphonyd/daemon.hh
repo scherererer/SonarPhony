@@ -38,7 +38,7 @@ public:
 private slots:
 	/// \brief Handle a ping message
 	/// \param ping_ Ping message to handle
-	void handlePing(sonarphony::pingMsg_t const &ping_);
+	void handlePing(quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
 
 private:
 	void send(QByteArray const &buffer_);

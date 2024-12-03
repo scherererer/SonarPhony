@@ -50,8 +50,8 @@ daemon_t::daemon_t ()
 	, m_udpPort(0)
 	, m_socket(this)
 {
-	connect (&m_connection, SIGNAL (ping (sonarphony::pingMsg_t const &)),
-	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
+	connect (&m_connection, &sonarConnection_t::ping,
+	         this, &daemon_t::handlePing);
 }
 
 void daemon_t::initialize (int const udpPort_)
@@ -70,13 +70,15 @@ void daemon_t::rawLog(std::string directory_)
 	m_rawLogger.setEnabled(true);
 }
 
-void daemon_t::handlePing (pingMsg_t const &ping_)
+void daemon_t::handlePing (quint64 tstamp_, pingMsg_t const &ping_)
 {
 	// NMEA0183 'specification' taken from:
 	// http://www.nmea.de/nmea0183datensaetze.html
 	// https://en.wikipedia.org/wiki/NMEA_0183
 
 	static char buffer[1024];
+
+    (void) tstamp_;
 
 	int chars = snprintf (buffer, sizeof (buffer),
 	                      "$SDDPT,%.1f,0.0*", ping_.depth ());
