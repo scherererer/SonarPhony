@@ -30,12 +30,12 @@ Through some trial and error, a portion of the protocol was decoded.
 
 I've only built this on Linux, but it will probably work in Windows.
 
-Requires Qt 4 or 5.
+Requires Qt 5 or 6.
 
 ```bash
 $ git clone https://github.com/scherererer/SonarPhony.git
 $ cd SonarPhony
-$ qmake-qt5 -r
+$ qmake6 -r
 $ make
 ```
 
@@ -46,8 +46,15 @@ cloth across the metal contacts for an in-air test (I don't recommend you do
 this too much, my experience has said running these in air isn't a good thing
 but it is for the consumer so it's probably fairly hardy). From your computer,
 a wifi network should appear (in my case it is T-POD-37A) and enter your wifi
-password as the manufacturer instructs. Then, run the program and hit the
+password as the manufacturer instructs. Then, start the program and hit the
 "run" button. The screen should start filling up with data.
+
+### Daemon
+
+A daemon is also distributed to run in a headless mode. It has options for
+sending NMEA0183 depth and sea temperature data over UDP to a chosen host. It
+can also be used to log to a local directory. Log files can later be visualzed
+by the GUI.
 
 ## Notes / Troubleshooting
 
