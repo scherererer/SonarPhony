@@ -16,26 +16,39 @@
 #pragma once
 
 #include "sonarphony/sonarConnection.hh"
+#include "sonarphony/logger.hh"
 
+#include <QByteArray>
 #include <QObject>
+#include <QUdpSocket>
 
 
 class daemon_t : public QObject
 {
 	Q_OBJECT
 public:
-	~daemon_t ();
-	daemon_t ();
+	~daemon_t();
+	daemon_t();
 
 	/// \brief Initialize the daemon
-	void initialize ();
+	void initialize(int udpPort_);
+
+	void rawLog(std::string directory_);
 
 private slots:
 	/// \brief Handle a ping message
 	/// \param ping_ Ping message to handle
-	void handlePing (sonarphony::pingMsg_t const &ping_);
+	void handlePing(quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
 
 private:
+	void send(QByteArray const &buffer_);
+
 	/// \brief Connection to the sonar unit
 	sonarphony::sonarConnection_t m_connection;
+	/// \brief Port for broadcast traffic
+	int m_udpPort;
+	/// \brief Socket for UDP messages
+	QUdpSocket m_socket;
+
+	sonarphony::rawLogger_t m_rawLogger;
 };

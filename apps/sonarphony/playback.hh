@@ -15,30 +15,34 @@
 
 #pragma once
 
-#include <QByteArray>
+#include "sonarphony/pingMsg.hh"
+
+#include <QFile>
+#include <QTimer>
 
 
-namespace sonarphony
+class playback_t : public QObject
 {
-
-/// \brief Constructs a "master" handshake message
-class masterHandshakeBuilder_t
-{
+	Q_OBJECT
 public:
-	~masterHandshakeBuilder_t ();
-	masterHandshakeBuilder_t ();
+    virtual ~playback_t();
+    playback_t();
 
-	/// \brief Build the message
-	QByteArray const &build ();
+    void setFile(QString const &file_);
 
-	/// \brief Build the pause message
-	QByteArray const &buildPause ();
+    /// \brief Skip forward
+    void skip(unsigned amount_ = 100);
 
-	/// \brief Build the master message
-	QByteArray const &buildMaster ();
+signals:
+	/// \brief A new ping message has been returned
+	/// \param tstamp_ Time in seconds since the epoch
+	/// \param ping_ The ping message
+	void ping(quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
+
+private slots:
+    void readMore();
 
 private:
-	QByteArray m_buffer;    ///< Message buffer
+    QFile m_file;
+    QTimer m_timer;
 };
-
-}

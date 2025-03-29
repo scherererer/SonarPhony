@@ -61,7 +61,7 @@ unsigned interp (pingMsg_t const &msg_, double const depth_)
 	Q_ASSERT (a <= b);
 	Q_ASSERT (a < size);
 
-	char const * const data = msg_.pingData ();
+	unsigned char const * const data = reinterpret_cast<unsigned char const *>(msg_.pingData ());
 
 	if (b >= size)
 		return data[a];
@@ -94,8 +94,11 @@ columnPulser_t::columnPulser_t (QWidget *parent_) :
 	m_timer.setInterval (100);
 }
 
-void columnPulser_t::handlePing (sonarphony::pingMsg_t const &ping_)
+void columnPulser_t::handlePing (quint64 tstamp_,
+                                 sonarphony::pingMsg_t const &ping_)
 {
+    (void) tstamp_;
+
 	m_lastMsg = ping_;
 
 	if (! m_timer.isActive ())

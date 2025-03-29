@@ -22,6 +22,7 @@
 using namespace sonarphony;
 
 #include <QByteArray>
+#include <QDateTime>
 #include <QDebug>
 
 #include <vector>
@@ -54,18 +55,23 @@ public:
 		requestTimer (parent_),
 		socket (parent_),
 		handshakeFinished (false),
+		masterFinished (false),
 		serialNumber (),
-		masterCommand ()
+		masterCommand (),
+		pause(false)
 	{}
 
 	QTimer requestTimer;            ///< Timer to poll the device
 	QUdpSocket socket;              ///< Socket to send/receive data on
 
 	bool handshakeFinished;         ///< Has the handshake finished?
+	bool masterFinished;            ///< Have we declared ourselves master?
 
 	std::string serialNumber;       ///< Serial number of device
 
 	QByteArray masterCommand;       ///< Cached command to send to device
+
+	bool pause;
 };
 
 
@@ -94,7 +100,7 @@ sonarConnection_t::sonarConnection_t (QObject *parent_) :
 	connect (&m_d->socket, SIGNAL (readyRead ()),
 	         SLOT (handleDatagrams ()));
 
-	m_d->socket.connectToHost (QHostAddress (HOST), PORT);
+	m_d->socket.bind();
 }
 
 void sonarConnection_t::setRange (double min_, double max_)
@@ -114,23 +120,30 @@ string sonarConnection_t::serialNumber () const
 void sonarConnection_t::start ()
 {
 	m_d->requestTimer.start ();
+	m_d->pause = false;
 }
 
 void sonarConnection_t::stop ()
 {
-	m_d->requestTimer.stop ();
+	m_d->pause = true;
+	m_d->handshakeFinished = false;
+	m_d->masterFinished = false;
 }
 
 void sonarConnection_t::query ()
 {
 	QByteArray cmd;
 
-	if (m_d->handshakeFinished)
-		cmd = m_d->masterCommand;
+	if (m_d->pause)
+		cmd = masterHandshakeBuilder_t().buildPause();
+	else if (! m_d->handshakeFinished)
+		cmd = masterHandshakeBuilder_t().build();
+	else if (! m_d->masterFinished)
+		cmd = masterHandshakeBuilder_t().buildMaster();
 	else
-		cmd = masterHandshakeBuilder_t ().build ();
+		cmd = m_d->masterCommand;
 
-	m_d->socket.write (cmd);
+	m_d->socket.writeDatagram(cmd, QHostAddress(HOST), PORT);
 }
 
 void sonarConnection_t::handleDatagrams ()
@@ -163,11 +176,14 @@ void sonarConnection_t::handleDatagrams ()
 				emit serialNumberChanged ();
 				break;
 			    }
+			case sonarMsg_t::T_MASTER:
+			    m_d->masterFinished = true;
+			    break;
 			case sonarMsg_t::T_PING:
 			    {
 				pingMsg_t p (*m);
 
-				emit ping (p);
+				emit ping (QDateTime::currentMSecsSinceEpoch(), p);
 				break;
 			    }
 			case sonarMsg_t::T_UNKNOWN:

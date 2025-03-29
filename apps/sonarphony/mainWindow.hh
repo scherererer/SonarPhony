@@ -16,6 +16,7 @@
 #pragma once
 
 #include "about.hh"
+#include "playback.hh"
 
 #include "sonarphony/sonarConnection.hh"
 #include "sonarphony/logger.hh"
@@ -41,7 +42,7 @@ private slots:
 	void handleData (QByteArray const &msg_);
 	/// \brief Handle a ping message
 	/// \param ping_ Ping message
-	void handlePing (sonarphony::pingMsg_t const &ping_);
+	void handlePing (quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
 
 	/// \brief Handle a change in serial number
 	void serialNumberChanged ();
@@ -54,6 +55,8 @@ private slots:
 	/// \brief Preferences menu item clicked
 	/// \param checked_ Is it checked?
 	void on_actionPreferences_triggered (bool checked_);
+
+    void on_timeFastButton_clicked();
 
 private:
 	Ui::mainWindow m_ui;            ///< Primary form
@@ -73,5 +76,7 @@ private:
 	sonarphony::rawLogger_t m_rawLogger;
 	/// \brief NMEA0183 data logger
 	sonarphony::nmeaLogger_t m_nmeaLogger;
+
+    playback_t m_playback;
 };
 

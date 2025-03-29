@@ -28,14 +28,15 @@ using namespace sonarphony;
 using namespace std;
 
 
-mainWindow_t::mainWindow_t () :
-	QMainWindow (),
-	m_ui (),
-	m_preferences (),
-	m_aboutDialog (this),
-	m_connection (),
-	m_rawLogger (),
-	m_nmeaLogger ()
+mainWindow_t::mainWindow_t ()
+	: QMainWindow()
+	, m_ui()
+	, m_preferences()
+	, m_aboutDialog(this)
+	, m_connection()
+	, m_rawLogger()
+	, m_nmeaLogger()
+    , m_playback()
 {
 	m_ui.setupUi (this);
 
@@ -59,23 +60,17 @@ mainWindow_t::mainWindow_t () :
 	connect (m_ui.actionExit, SIGNAL (triggered ()),
 	         qApp, SLOT (quit ()));
 
-	connect (&m_connection,
-	         SIGNAL (ping (sonarphony::pingMsg_t const &)),
-	         m_ui.waterfall,
-	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
-	connect (&m_connection,
-	         SIGNAL (ping (sonarphony::pingMsg_t const &)),
-	         m_ui.columnPulser,
-	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
+	connect (&m_connection, &sonarConnection_t::ping,
+	         m_ui.waterfall, &waterfall_t::handlePing);
+	connect (&m_connection, &sonarConnection_t::ping,
+	         m_ui.columnPulser, &columnPulser_t::handlePing);
 
-	connect (&m_connection,
-	         SIGNAL (newData (QByteArray const &)),
-	         SLOT (handleData (QByteArray const &)));
-	connect (&m_connection,
-	         SIGNAL (ping (sonarphony::pingMsg_t const &)),
-	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
-	connect (&m_connection, SIGNAL (serialNumberChanged ()),
-	         SLOT (serialNumberChanged ()));
+	connect (&m_connection, &sonarConnection_t::newData,
+	         this, &mainWindow_t::handleData);
+	connect (&m_connection, &sonarConnection_t::ping,
+	         this, &mainWindow_t::handlePing);
+	connect (&m_connection, &sonarConnection_t::serialNumberChanged,
+	         this, &mainWindow_t::serialNumberChanged);
 
 	connect (m_ui.minRangeSB, SIGNAL (valueChanged (int)),
 	         SLOT (rangeChanged ()));
@@ -84,6 +79,13 @@ mainWindow_t::mainWindow_t () :
 
 	m_rawLogger.setConnection (m_connection);
 	m_nmeaLogger.setConnection (m_connection);
+
+	connect (&m_playback, &playback_t::ping,
+	         this, &mainWindow_t::handlePing);
+	connect (&m_playback, &playback_t::ping,
+	         m_ui.columnPulser, &columnPulser_t::handlePing);
+	connect (&m_playback, &playback_t::ping,
+	         m_ui.waterfall, &waterfall_t::handlePing);
 }
 
 void mainWindow_t::handleData (QByteArray const &msg_)
@@ -121,10 +123,13 @@ void mainWindow_t::handleData (QByteArray const &msg_)
 	case sonarMsg_t::T_BUSY:
 	case sonarMsg_t::T_V:
 		break;
+	case sonarMsg_t::T_MASTER:
+		m_ui.output->appendPlainText ("Master");
+		break;
 	}
 }
 
-void mainWindow_t::handlePing (pingMsg_t const &ping_)
+void mainWindow_t::handlePing (quint64 tstamp_, pingMsg_t const &ping_)
 {
 	m_ui.depth->setText (QString::number (ping_.depth (), 'f', 1));
 
@@ -137,6 +142,9 @@ void mainWindow_t::handlePing (pingMsg_t const &ping_)
 
 	m_ui.minRange->setText (QString::number (ping_.minRange ()) + " ft");
 	m_ui.maxRange->setText (QString::number (ping_.maxRange ()) + " ft");
+
+    QDateTime const time = QDateTime::fromMSecsSinceEpoch(tstamp_);
+    m_ui.timeLabel->setText(time.toString(Qt::ISODate));
 }
 
 void mainWindow_t::rangeChanged ()
@@ -184,5 +192,16 @@ void mainWindow_t::on_actionPreferences_triggered (bool checked_)
 
 	m_rawLogger.setEnabled (m_preferences.ui.enableRawLogs->isChecked ());
 	m_nmeaLogger.setEnabled (m_preferences.ui.enableNmeaLogs->isChecked ());
+
+    if (m_preferences.ui.enablePlayback->isChecked())
+        m_playback.setFile(m_preferences.ui.playbackFile->text());
+
+    m_ui.timelineDockWidget->setEnabled(m_preferences.ui.enablePlayback->isChecked());
+    m_ui.controlsDockWidget->setEnabled(! m_preferences.ui.enablePlayback->isChecked());
+}
+
+void mainWindow_t::on_timeFastButton_clicked()
+{
+    m_playback.skip(1000);
 }
 

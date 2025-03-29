@@ -45,7 +45,7 @@ public:
 public slots:
 	/// \brief Handle a ping message
 	/// \param ping_ Ping message to be handled
-	void handlePing (sonarphony::pingMsg_t const &ping_);
+	void handlePing (quint64 tstamp_, sonarphony::pingMsg_t const &ping_);
 
 private slots:
 	/// \brief Redraw the waterfall

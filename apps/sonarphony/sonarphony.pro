@@ -17,6 +17,7 @@ HEADERS += about.hh
 HEADERS += columnPulser.hh
 HEADERS += mainWindow.hh
 HEADERS += palette.hh
+HEADERS += playback.hh
 HEADERS += waterfall.hh
 
 SOURCES += about.cc
@@ -24,6 +25,7 @@ SOURCES += columnPulser.cc
 SOURCES += main.cc
 SOURCES += mainWindow.cc
 SOURCES += palette.cc
+SOURCES += playback.cc
 SOURCES += waterfall.cc
 
 FORMS   += about.ui

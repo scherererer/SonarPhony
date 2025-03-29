@@ -91,8 +91,10 @@ public:
 		/// \brief Busy message type
 		/// \sa sonarMsg_t
 		T_BUSY,
-		/// \brief "V" message type (unknown)
+		/// \brief "V" message type (unknown), I think it is a pause
 		T_V,
+		/// \brief Master message, for taking over as master
+		T_MASTER,
 	};
 
 	/// \brief Get the message type

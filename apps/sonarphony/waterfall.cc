@@ -31,9 +31,9 @@ namespace
 {
 
 /// \brief Number of pings to display in the waterfall
-unsigned const NUM_PINGS                = 256;
+unsigned const NUM_PINGS                = 512;
 /// \brief Resolution of watercolumn to display
-unsigned const VERTICAL_RESOLUTION      = 500;
+unsigned const VERTICAL_RESOLUTION      = 800;
 
 /// \brief Interpolate a ping intensity at the given depth
 /// \param msg_ Ping message to get column from
@@ -61,7 +61,7 @@ unsigned interp (pingMsg_t const &msg_, double const depth_)
 	Q_ASSERT (a <= b);
 	Q_ASSERT (a < size);
 
-	char const * const data = msg_.pingData ();
+	unsigned char const * const data = reinterpret_cast<unsigned char const *>(msg_.pingData ());
 
 	if (b >= size)
 		return data[a];
@@ -96,8 +96,10 @@ waterfall_t::waterfall_t (QWidget *parent_) :
 	m_timer.setInterval (100);
 }
 
-void waterfall_t::handlePing (sonarphony::pingMsg_t const &ping_)
+void waterfall_t::handlePing (quint64 tstamp_, sonarphony::pingMsg_t const &ping_)
 {
+    (void) tstamp_;
+
 	if (m_msgBuffer.size () + 1 > NUM_PINGS)
 	{
 		pingMsg_t const &remove = m_msgBuffer.front ();
@@ -163,7 +165,11 @@ void waterfall_t::redraw ()
 
 			unsigned const value = interp (m_msgBuffer[c], depth);
 
-			if (value > 255)
+			if (floor(depth * 10) == floor(m_msgBuffer[c].depth()*10))
+				painter.setPen (
+					backgrounds::list[m_backgroundIndex]
+					.foreground);
+			else if (value > 255)
 				painter.setPen (
 					backgrounds::list[m_backgroundIndex]
 					.color);

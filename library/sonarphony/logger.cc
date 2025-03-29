@@ -132,11 +132,15 @@ void rawLogger_t::setConnection (sonarConnection_t &connection_)
 
 void rawLogger_t::handleData (QByteArray const &data_)
 {
-	m_buffer.resize (4);
+	m_buffer.resize (12);
 
 	qToLittleEndian<quint32> (
-		data_.size (),
-		reinterpret_cast<uchar *> (m_buffer.data ()));
+		(data_.size()+8),
+		reinterpret_cast<uchar *> (m_buffer.data()));
+
+	qToLittleEndian<quint64> (
+		QDateTime::currentMSecsSinceEpoch(),
+		reinterpret_cast<uchar *> (m_buffer.data()+4));
 
 	m_buffer.append (data_);
 
@@ -152,12 +156,14 @@ nmeaLogger_t::nmeaLogger_t () :
 
 void nmeaLogger_t::setConnection (sonarConnection_t &connection_)
 {
-	connect (&connection_, SIGNAL (ping (sonarphony::pingMsg_t const &)),
-	         SLOT (handlePing (sonarphony::pingMsg_t const &)));
+	connect (&connection_, &sonarConnection_t::ping,
+	         this, &nmeaLogger_t::handlePing);
 }
 
-void nmeaLogger_t::handlePing (pingMsg_t const &ping_)
+void nmeaLogger_t::handlePing (quint64 tstamp_, pingMsg_t const &ping_)
 {
+    (void) tstamp_;
+
 	// NMEA0183 'specification' taken from:
 	// http://www.nmea.de/nmea0183datensaetze.html
 	// https://en.wikipedia.org/wiki/NMEA_0183
