@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
+
 #include <QByteArray>
 
 
@@ -22,7 +24,7 @@ namespace sonarphony
 {
 
 /// \brief Constructs a "master" command
-class masterCommandBuilder_t
+class SONARPHONY_LOCAL masterCommandBuilder_t
 {
 public:
 	~masterCommandBuilder_t ();

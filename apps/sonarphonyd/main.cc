@@ -30,7 +30,7 @@ int main (int argc_, char **argv_)
 	QCoreApplication app(argc_, argv_);
 
 	app.setApplicationName(argv_[0]);
-	app.setApplicationVersion(SONARPHONY_VERSION);
+	app.setApplicationVersion(0);
 
 	QCommandLineParser parser;
 	parser.setApplicationDescription("SonarPhony Daemon");

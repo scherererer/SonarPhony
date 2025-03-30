@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
+
 #include <QByteArray>
 
 #include <string>
@@ -25,7 +27,7 @@ namespace sonarphony
 {
 
 /// \brief Base class for any messages coming from the sonar
-class sonarMsg_t
+class SONARPHONY_EXPORT sonarMsg_t
 {
 public:
 	~sonarMsg_t ();
@@ -123,10 +125,10 @@ protected:
 
 /// \brief Split out all messages in the given buffer
 /// \param buffer_ Incoming buffer
-extern std::vector<sonarMsg_t> splitMessages (QByteArray const &buffer_);
+SONARPHONY_EXPORT extern std::vector<sonarMsg_t> splitMessages (QByteArray const &buffer_);
 
 /// \brief Print the message type out as a string
 /// \param type_ Type of message
-extern std::string toString (sonarMsg_t::type_t type_);
+SONARPHONY_EXPORT extern std::string toString (sonarMsg_t::type_t type_);
 
 }

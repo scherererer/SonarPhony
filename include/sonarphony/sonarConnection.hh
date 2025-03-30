@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
+
 #include <QTimer>
 #include <QUdpSocket>
 
@@ -24,7 +26,7 @@ namespace sonarphony
 class pingMsg_t;
 
 /// \brief A connection to the sonar device
-class sonarConnection_t : public QObject
+class SONARPHONY_EXPORT sonarConnection_t : public QObject
 {
 	Q_OBJECT
 public:

@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
 #include "sonarphony/sonarMsg.hh"
 
 #include <QByteArray>
@@ -27,7 +28,7 @@ namespace sonarphony
 /// \brief Message encapsulating a ping
 ///
 /// Messages must have a ready status
-class pingMsg_t : public sonarMsg_t
+class SONARPHONY_EXPORT pingMsg_t : public sonarMsg_t
 {
 public:
 	~pingMsg_t ();
