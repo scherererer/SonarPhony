@@ -27,6 +27,6 @@ about_t::about_t (QWidget *parent_) :
 {
 	m_ui.setupUi (this);
 
-	m_ui.versionLabel->setText (SONARPHONY_VERSION);
-	m_ui.copyrightLabel->setText (SONARPHONY_COPYRIGHT_YEARS);
+	m_ui.versionLabel->setText ("--");
+	m_ui.copyrightLabel->setText ("2025");
 }

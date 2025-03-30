@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SonarPhony.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "sonarphony/global.hh"
+
 #include <QByteArray>
 #include <QFile>
 
@@ -25,7 +27,7 @@ class sonarConnection_t;
 class pingMsg_t;
 
 /// \brief Base class for logging objects
-class logger_t : public QObject
+class SONARPHONY_EXPORT logger_t : public QObject
 {
 	Q_OBJECT
 public:
@@ -68,10 +70,11 @@ private:
 ///
 /// All data is encoded with a 4 byte unsigned integer to indicate the size of
 /// the message blob (LE), followed by the blob itself.
-class rawLogger_t : public logger_t
+class SONARPHONY_EXPORT rawLogger_t : public logger_t
 {
 	Q_OBJECT
 public:
+	~rawLogger_t ();
 	rawLogger_t ();
 
 	/// \brief Set the connection to log. Should only be called once.
@@ -90,10 +93,11 @@ private:
 /// \brief Log data as NMEA0183
 ///
 /// Logs DPT messages to file
-class nmeaLogger_t : public logger_t
+class SONARPHONY_EXPORT nmeaLogger_t : public logger_t
 {
 	Q_OBJECT
 public:
+	~nmeaLogger_t ();
 	nmeaLogger_t ();
 
 	/// \brief Set the connection to log. Should only be called once.

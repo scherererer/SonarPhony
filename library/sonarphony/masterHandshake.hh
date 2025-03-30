@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
+
 #include <QByteArray>
 
 
@@ -22,7 +24,7 @@ namespace sonarphony
 {
 
 /// \brief Constructs a "master" handshake message
-class masterHandshakeBuilder_t
+class SONARPHONY_LOCAL masterHandshakeBuilder_t
 {
 public:
 	~masterHandshakeBuilder_t ();

@@ -118,6 +118,12 @@ logger_t::logger_t (std::string const &extension_) :
 	              .toStdString ());
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+rawLogger_t::~rawLogger_t ()
+{
+}
+
 rawLogger_t::rawLogger_t () :
 	logger_t ("sonarphony.raw"),
 	m_buffer ()
@@ -145,6 +151,12 @@ void rawLogger_t::handleData (QByteArray const &data_)
 	m_buffer.append (data_);
 
 	log (m_buffer);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+nmeaLogger_t::~nmeaLogger_t ()
+{
 }
 
 nmeaLogger_t::nmeaLogger_t () :

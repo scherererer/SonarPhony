@@ -26,7 +26,7 @@ int main (int argc_, char **argv_)
 	QApplication app (argc_, argv_);
 
 	app.setApplicationName (argv_[0]);
-	app.setApplicationVersion (SONARPHONY_VERSION);
+	app.setApplicationVersion (0);
 
 	// Nicked this style snippet from:
 	// https://gist.github.com/QuantumCD/6245215

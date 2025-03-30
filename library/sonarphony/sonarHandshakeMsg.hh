@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
 #include "sonarphony/sonarMsg.hh"
 
 #include <QByteArray>
@@ -26,7 +27,7 @@ namespace sonarphony
 {
 
 /// \brief Handshake message from the sonar unit
-class sonarHandshakeMsg_t : public sonarMsg_t
+class SONARPHONY_LOCAL sonarHandshakeMsg_t : public sonarMsg_t
 {
 public:
 	~sonarHandshakeMsg_t ();
