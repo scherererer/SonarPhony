@@ -24,6 +24,7 @@ using namespace sonarphony;
 #include <QByteArray>
 #include <QDateTime>
 #include <QDebug>
+#include <QUdpSocket>
 
 #include <vector>
 using namespace std;

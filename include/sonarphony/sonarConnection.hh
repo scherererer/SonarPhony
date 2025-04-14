@@ -18,7 +18,7 @@
 #include "sonarphony/global.hh"
 
 #include <QTimer>
-#include <QUdpSocket>
+#include <QByteArray>
 
 namespace sonarphony
 {
