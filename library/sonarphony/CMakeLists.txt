@@ -13,7 +13,7 @@ add_compile_options(-fvisibility=hidden -Wall -Wextra -Werror -Wno-error=address
 find_package(Qt6 REQUIRED COMPONENTS Core Network)
 qt_standard_project_setup()
 
-qt_add_library(libsonarphony
+qt_add_library(libsonarphony STATIC
 	../../include/sonarphony/global.hh
 	../../include/sonarphony/logger.hh
 	../../include/sonarphony/pingMsg.hh
