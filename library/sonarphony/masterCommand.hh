@@ -39,6 +39,16 @@ public:
 	/// values to 0 will enable auto-ranging.
 	void setRange (unsigned min_, unsigned max_);
 
+    enum frequency_t
+    {
+        F_80    = 0,    //< 80 kHz  (SP200/SP300)
+        F_125   = 1,    //< 125 kHz (SP100)
+        F_200   = 2,    //< 200 kHz (SP200/SP300)
+    };
+
+    /// \brief Set the desired frequency
+    void setFrequency (frequency_t freq_);
+
 	/// \brief Build the message
 	QByteArray const &build ();
 
@@ -47,6 +57,7 @@ private:
 
 	unsigned m_minRange;    ///< Requested minimum range
 	unsigned m_maxRange;    ///< Requested maximum range
+	unsigned m_frequency;   ///< Requested frequency option
 };
 
 }

@@ -35,6 +35,10 @@ unsigned char const MAGIC_MIDDLE[] = {
 	0x00, 0x00, 0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+//02: second
+//04: T-POD, 125 kHz
+//08: first
+
 /// \brief Session Code
 unsigned char const SESSION[] = {
 	0x00, 0x17, 0x31, 0x98, 0x71, 0x81, 0x48
@@ -56,7 +60,8 @@ masterCommandBuilder_t::~masterCommandBuilder_t ()
 masterCommandBuilder_t::masterCommandBuilder_t () :
 	m_buffer (),
 	m_minRange (0),
-	m_maxRange (0)
+	m_maxRange (0),
+    m_frequency (4)
 {
 	m_buffer.reserve (MESSAGE_SIZE);
 }
@@ -68,6 +73,16 @@ void masterCommandBuilder_t::setRange (unsigned min_, unsigned max_)
 
 	m_minRange = min_;
 	m_maxRange = max_;
+}
+
+void masterCommandBuilder_t::setFrequency (frequency_t freq_)
+{
+    switch(freq_)
+    {
+    case F_80:  m_frequency = 2; break;
+    case F_125: m_frequency = 4; break;
+    case F_200: m_frequency = 8; break;
+    }
 }
 
 QByteArray const &masterCommandBuilder_t::build ()
@@ -88,7 +103,17 @@ QByteArray const &masterCommandBuilder_t::build ()
 	m_buffer.append (static_cast<char> (m_maxRange));
 
 	// Don't know what any of this is yet
-	m_buffer.append (_U2S (MAGIC_MIDDLE), sizeof (MAGIC_MIDDLE));
+    // 0x00, 0x00, 0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00
+	m_buffer.append (char (0x00));
+	m_buffer.append (char (0x00));
+	m_buffer.append (char (0x01));
+	m_buffer.append (char (0x00));
+	m_buffer.append (static_cast<char> (m_frequency));
+	m_buffer.append (char (0x00));
+	m_buffer.append (char (0x00));
+	m_buffer.append (char (0x00));
+	m_buffer.append (char (0x00));
+	m_buffer.append (char (0x00));
 
 	// Checksum. Why that's needed inside of a UDP packet I'll never know
 	m_buffer.append (calculateChecksum (m_buffer));

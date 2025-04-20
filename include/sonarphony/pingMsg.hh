@@ -70,6 +70,12 @@ public:
 	/// battery voltage.
 	unsigned batteryLevel () const;
 
+	/// \brief Get the center frequency in Hz
+	double frequency () const;
+
+	/// \brief Get the beam angle in degrees
+	double beamWidth () const;
+
 	/// \brief Points to the ping data buffer
 	char const *pingData () const;
 	/// \brief Size of ping data buffer
