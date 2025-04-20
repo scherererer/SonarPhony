@@ -58,6 +58,8 @@ private slots:
 
     void on_timeFastButton_clicked();
 
+    void on_frequencyCB_currentIndexChanged(int index_);
+
 private:
 	Ui::mainWindow m_ui;            ///< Primary form
 

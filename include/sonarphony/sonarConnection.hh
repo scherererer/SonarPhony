@@ -43,6 +43,16 @@ public:
 	/// values to 0 will enable auto-ranging.
 	void setRange (double min_, double max_);
 
+    enum frequency_t
+    {
+        F_80    = 0,    //< 80 kHz  (SP200/SP300)
+        F_125   = 1,    //< 125 kHz (SP100)
+        F_200   = 2,    //< 200 kHz (SP200/SP300)
+    };
+
+    /// \brief Set the desired center frequency
+    void setFrequency (frequency_t freq_);
+
 	/// \brief Get the serial number for the sonar on this connection
 	std::string serialNumber () const;
 
