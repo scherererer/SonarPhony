@@ -76,7 +76,7 @@ public slots:
 	void setRange (double min_, double max_);
 
     /// \brief Set the desired center frequency
-    void setFrequency (frequency_t freq_);
+    void setFrequency (sonarConnection_t::frequency_t freq_);
 
 private slots:
 	/// \brief Send an actual query to the device
