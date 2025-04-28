@@ -104,18 +104,6 @@ sonarConnection_t::sonarConnection_t (QObject *parent_) :
 	m_d->socket.bind();
 }
 
-void sonarConnection_t::setRange (double min_, double max_)
-{
-	m_d->builder.setRange (min_, max_);
-	m_d->masterCommand = m_d->builder.build ();
-}
-
-void sonarConnection_t::setFrequency (frequency_t freq_)
-{
-	m_d->builder.setFrequency (freq_);
-	m_d->masterCommand = m_d->builder.build ();
-}
-
 string sonarConnection_t::serialNumber () const
 {
 	return m_d->serialNumber;
@@ -132,6 +120,18 @@ void sonarConnection_t::stop ()
 	m_d->pause = true;
 	m_d->handshakeFinished = false;
 	m_d->masterFinished = false;
+}
+
+void sonarConnection_t::setRange (double min_, double max_)
+{
+	m_d->builder.setRange (min_, max_);
+	m_d->masterCommand = m_d->builder.build ();
+}
+
+void sonarConnection_t::setFrequency (frequency_t freq_)
+{
+	m_d->builder.setFrequency (freq_);
+	m_d->masterCommand = m_d->builder.build ();
 }
 
 void sonarConnection_t::query ()
