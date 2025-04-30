@@ -130,8 +130,11 @@ void sonarConnection_t::setRange (double min_, double max_)
 
 void sonarConnection_t::setFrequency (frequency_t freq_)
 {
-	m_d->builder.setFrequency (freq_);
-	m_d->masterCommand = m_d->builder.build ();
+    m_d->builder.setFrequency (freq_);
+    m_d->masterCommand = m_d->builder.build ();
+
+    query();
+    m_d->requestTimer.start ();
 }
 
 void sonarConnection_t::query ()
