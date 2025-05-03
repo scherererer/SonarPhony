@@ -15,8 +15,10 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
+
 #include <QTimer>
-#include <QUdpSocket>
+#include <QByteArray>
 
 namespace sonarphony
 {
@@ -24,7 +26,7 @@ namespace sonarphony
 class pingMsg_t;
 
 /// \brief A connection to the sonar device
-class sonarConnection_t : public QObject
+class SONARPHONY_EXPORT sonarConnection_t : public QObject
 {
 	Q_OBJECT
 public:
@@ -32,14 +34,12 @@ public:
 	/// \param parent_ Parent object for the connection
 	explicit sonarConnection_t (QObject *parent_ = 0);
 
-	/// \brief Set the range
-	/// \param min_ Minimum range (upper limit) [0, ?] feet
-	/// \param max_ Maximum range (lower limit) [0, 240] feet
-	///
-	/// The maximum range for the T-Pod is 120 feet, while the T-Box is
-	/// rated to 240 feet, although this has not been tested. Setting both
-	/// values to 0 will enable auto-ranging.
-	void setRange (double min_, double max_);
+    enum frequency_t
+    {
+        F_80    = 0,    //< 80 kHz  (SP200/SP300)
+        F_125   = 1,    //< 125 kHz (SP100)
+        F_200   = 2,    //< 200 kHz (SP200/SP300)
+    };
 
 	/// \brief Get the serial number for the sonar on this connection
 	std::string serialNumber () const;
@@ -66,6 +66,18 @@ public slots:
 	/// \note The device will continue to send pings until it times out
 	void stop ();
 
+	/// \brief Set the range
+	/// \param min_ Minimum range (upper limit) [0, ?] feet
+	/// \param max_ Maximum range (lower limit) [0, 240] feet
+	///
+	/// The maximum range for the T-Pod is 120 feet, while the T-Box is
+	/// rated to 240 feet, although this has not been tested. Setting both
+	/// values to 0 will enable auto-ranging.
+	void setRange (double min_, double max_);
+
+    /// \brief Set the desired center frequency
+    void setFrequency (sonarConnection_t::frequency_t freq_);
+
 private slots:
 	/// \brief Send an actual query to the device
 	void query ();
@@ -78,3 +90,5 @@ private:
 };
 
 }
+
+Q_DECLARE_METATYPE(sonarphony::sonarConnection_t::frequency_t)

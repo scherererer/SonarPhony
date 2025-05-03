@@ -30,12 +30,12 @@ Through some trial and error, a portion of the protocol was decoded.
 
 I've only built this on Linux, but it will probably work in Windows.
 
-Requires Qt 5 or 6.
+Requires Qt 6.
 
 ```bash
 $ git clone https://github.com/scherererer/SonarPhony.git
 $ cd SonarPhony
-$ qmake6 -r
+$ cmake .
 $ make
 ```
 

@@ -24,6 +24,7 @@ using namespace sonarphony;
 #include <QByteArray>
 #include <QDateTime>
 #include <QDebug>
+#include <QUdpSocket>
 
 #include <vector>
 using namespace std;
@@ -72,6 +73,8 @@ public:
 	QByteArray masterCommand;       ///< Cached command to send to device
 
 	bool pause;
+
+	masterCommandBuilder_t builder;
 };
 
 
@@ -85,11 +88,9 @@ sonarConnection_t::sonarConnection_t (QObject *parent_) :
 	QObject (parent_),
 	m_d (new private_t (this))
 {
-	masterCommandBuilder_t builder;
+	m_d->builder.setRange (0, 9);
 
-	builder.setRange (0, 9);
-
-	m_d->masterCommand = builder.build ();
+	m_d->masterCommand = m_d->builder.build ();
 
 	connect (&m_d->requestTimer, SIGNAL (timeout ()),
 	         SLOT (query ()));
@@ -101,15 +102,6 @@ sonarConnection_t::sonarConnection_t (QObject *parent_) :
 	         SLOT (handleDatagrams ()));
 
 	m_d->socket.bind();
-}
-
-void sonarConnection_t::setRange (double min_, double max_)
-{
-	masterCommandBuilder_t builder;
-
-	builder.setRange (min_, max_);
-
-	m_d->masterCommand = builder.build ();
 }
 
 string sonarConnection_t::serialNumber () const
@@ -128,6 +120,21 @@ void sonarConnection_t::stop ()
 	m_d->pause = true;
 	m_d->handshakeFinished = false;
 	m_d->masterFinished = false;
+}
+
+void sonarConnection_t::setRange (double min_, double max_)
+{
+	m_d->builder.setRange (min_, max_);
+	m_d->masterCommand = m_d->builder.build ();
+}
+
+void sonarConnection_t::setFrequency (frequency_t freq_)
+{
+    m_d->builder.setFrequency (freq_);
+    m_d->masterCommand = m_d->builder.build ();
+
+    query();
+    m_d->requestTimer.start ();
 }
 
 void sonarConnection_t::query ()

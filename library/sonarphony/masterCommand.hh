@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "sonarphony/global.hh"
+#include "sonarphony/sonarConnection.hh"
+
 #include <QByteArray>
 
 
@@ -22,7 +25,7 @@ namespace sonarphony
 {
 
 /// \brief Constructs a "master" command
-class masterCommandBuilder_t
+class SONARPHONY_LOCAL masterCommandBuilder_t
 {
 public:
 	~masterCommandBuilder_t ();
@@ -37,6 +40,9 @@ public:
 	/// values to 0 will enable auto-ranging.
 	void setRange (unsigned min_, unsigned max_);
 
+    /// \brief Set the desired frequency
+    void setFrequency (sonarConnection_t::frequency_t freq_);
+
 	/// \brief Build the message
 	QByteArray const &build ();
 
@@ -45,6 +51,7 @@ private:
 
 	unsigned m_minRange;    ///< Requested minimum range
 	unsigned m_maxRange;    ///< Requested maximum range
+	unsigned m_frequency;   ///< Requested frequency option
 };
 
 }

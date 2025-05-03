@@ -143,6 +143,9 @@ void mainWindow_t::handlePing (quint64 tstamp_, pingMsg_t const &ping_)
 	m_ui.minRange->setText (QString::number (ping_.minRange ()) + " ft");
 	m_ui.maxRange->setText (QString::number (ping_.maxRange ()) + " ft");
 
+	m_ui.frequencyLabel->setText (QString::number (ping_.frequency ()) + " kHz");
+	m_ui.beamWidthLabel->setText (QString::number (ping_.beamWidth ()) + " °");
+
     QDateTime const time = QDateTime::fromMSecsSinceEpoch(tstamp_);
     m_ui.timeLabel->setText(time.toString(Qt::ISODate));
 }
@@ -203,5 +206,21 @@ void mainWindow_t::on_actionPreferences_triggered (bool checked_)
 void mainWindow_t::on_timeFastButton_clicked()
 {
     m_playback.skip(1000);
+}
+
+void mainWindow_t::on_frequencyCB_currentIndexChanged(int const index_)
+{
+    sonarConnection_t::frequency_t frequency = sonarConnection_t::F_125;
+    m_ui.output->appendPlainText ("Changed frequency");
+
+    switch (index_)
+    {
+    case 0: frequency = sonarConnection_t::F_80; break;
+    case 1: frequency = sonarConnection_t::F_125; break;
+    case 2: frequency = sonarConnection_t::F_200; break;
+    default: m_ui.output->appendPlainText ("BUG: Unhandled frequency option"); break;
+    }
+
+    m_connection.setFrequency (frequency);
 }
 

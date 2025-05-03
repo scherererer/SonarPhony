@@ -59,7 +59,7 @@ enum
 	// 01   [29]    < const (1  / 1025)
 	O_BATTERY       = 30, // << Whole part of battery voltage
 	O_BATTERY_FRAC  = 31, // << Fractional part of battery voltage [100-0]
-	// 04   [32]    < const < battery upper?
+	O_PING_FREQ     = 32, // 04   [32]    < Ping Type 2/4/8
 	// A2.B5.78.EF.F5 -- 5 byte footer
 	O_PING_BEGIN    = 38,   //< const ?
 	// [39]         < const?
@@ -152,6 +152,50 @@ unsigned pingMsg_t::batteryLevel () const
 
 	return clip (((batteryVoltage () - BATTERY_MIN_VOLTAGE) / range) * 100,
 	             0, 100);
+}
+
+double pingMsg_t::frequency () const
+{
+    unsigned frequency = m_buffer[O_PING_FREQ];
+    //02: second
+    //04: T-POD, 125 kHz, 30 degree
+    //08: first
+    //200/83 Dual Beam 20/40
+
+    switch (frequency)
+    {
+    case 2:
+        return  80000;
+    case 4:
+        return 125000;
+    case 8:
+        return 200000;
+    }
+
+    qCritical("Unknown ping frequency option %02X", frequency);
+    return 0;
+}
+
+double pingMsg_t::beamWidth () const
+{
+    unsigned frequency = m_buffer[O_PING_FREQ];
+    //02: second
+    //04: T-POD, 125 kHz, 30 degree
+    //08: first
+    //200/83 Dual Beam 20/40
+
+    switch (frequency)
+    {
+    case 2:
+        return 40;
+    case 4:
+        return 30;
+    case 8:
+        return 20;
+    }
+
+    qCritical("Unknown ping frequency option %02X", frequency);
+    return 0;
 }
 
 char const *pingMsg_t::pingData () const
