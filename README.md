@@ -1,22 +1,15 @@
 # SonarPhony
 
 It is easy to find simple depth sounders that are interoperable and have
-open-ish interfaces, but you would be hard-pressed to find a device that gives
-the full water column and provides an open interface to do so.
+open-ish interfaces, but you would be hard-pressed to find a low cost device
+that gives the full water column and provides an open interface to do so.
 
 This is a reference implementation to communicate with Vexilar SonarPhone
 fish finders (http://sonarphone.mobi/).
 
 This project, and its author(s), are in no way affiliated with Vexilar. This was
-created for educational purposes only on the author's personal time, and is
-released without any warranty whatsoever.
-
-## Discovery Method
-
-The protocol was reverse engineered by monitoring the packets between the
-device and the manufacturer's app. Hex dumps of the captured packets were
-compared against what the app displayed and was commanding to the device.
-Through some trial and error, a portion of the protocol was decoded.
+created for educational purposes only to increase interoperability of the device,
+and is released without any warranty whatsoever.
 
 ## Screenshots
 
@@ -24,9 +17,8 @@ Through some trial and error, a portion of the protocol was decoded.
 ![Screenshot 1](/../screenshots/screenshots/screenshot-1.png?raw=true)
 ![Screenshot 2](/../screenshots/screenshots/screenshot-2.png?raw=true)
 
-## Usage
 
-### Compiling
+## Compiling
 
 I've only built this on Linux, but it will probably work in Windows.
 
@@ -38,6 +30,28 @@ $ cd SonarPhony
 $ cmake .
 $ make
 ```
+
+### Ubuntu or Raspbian Install
+
+```bash
+% Install cmake and build-essential
+sudo apt install -y git cmake build-essential
+
+% Install required Qt6 libraries
+sudo apt install -y qt6-base-dev qt6-base-dev-tools libqt6network6
+
+% clone SonorPhony directory and use cmake to build
+git clone https://github.com/scherererer/SonarPhony.git
+cd SonarPhony
+mkdir build
+cd build
+cmake ..
+
+% Specific to the Raspberry Pi 3 or other ram/core limited devices
+make -j2
+```
+
+## Usage
 
 ### Running
 
@@ -60,11 +74,7 @@ by the GUI.
 
 ### Device Testing Limitations
 
-This **software has only been tested with the T-POD** because it was the
-cheapest one money could buy, however I suspect the protocol will be very
-similar on the other variants since it has to interop with the same app. If
-you are using one of the other products I would be really interested to see a
-full log.
+Tested on T-POD / SP100, SP200, and SP300.
 
 ### Passwords
 
