@@ -70,6 +70,10 @@ sending NMEA0183 depth and sea temperature data over UDP to a chosen host. It
 can also be used to log to a local directory. Log files can later be visualzed
 by the GUI.
 
+## Logger System
+
+Details on setting up a logger can be found here: [Logger Setup Guide](LOGGER.md)
+
 ## Notes / Troubleshooting
 
 ### Device Testing Limitations
